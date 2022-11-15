@@ -483,7 +483,7 @@ services:
 
   # OpenTelemetry Collector
   otelcol:
-    image: otel/opentelemetry-collector-contrib:0.61.0
+    image: otel/opentelemetry-collector-contrib:0.64.0
     container_name: otel-col
     deploy:
       resources:
@@ -499,6 +499,20 @@ services:
       - "4318:4318"     # OTLP over HTTP receiver
       - "9464"          # Prometheus exporter
       - "8888"          # metrics endpoint
+    environment:
+      - FEATURE_FLAG_SERVICE_PORT
+      - SHIPPING_SERVICE_PORT
+      - RECOMMENDATION_SERVICE_PORT
+      - QUOTE_SERVICE_PORT
+      - PRODUCT_CATALOG_SERVICE_PORT
+      - PAYMENT_SERVICE_PORT
+      - ENVOY_PORT
+      - FRONTEND_PORT
+      - EMAIL_SERVICE_PORT
+      - CURRENCY_SERVICE_PORT
+      - CHECKOUT_SERVICE_PORT
+      - CART_SERVICE_PORT
+      - AD_SERVICE_PORT
     depends_on:
       - jaeger
     logging: *logging

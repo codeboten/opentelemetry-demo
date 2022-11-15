@@ -1,4 +1,31 @@
 receivers:
+  httpcheck/featureflagservice:
+    endpoint: http://featureflagservice:${FEATURE_FLAG_SERVICE_PORT}
+  httpcheck/shippingservice:
+    endpoint: http://shippingservice:${SHIPPING_SERVICE_PORT}
+  httpcheck/recommendationservice:
+    endpoint: http://recommendationservice:${RECOMMENDATION_SERVICE_PORT}
+  httpcheck/quoteservice:
+    endpoint: http://quoteservice:${QUOTE_SERVICE_PORT}
+  httpcheck/productcatalogservice:
+    endpoint: http://productcatalogservice:${PRODUCT_CATALOG_SERVICE_PORT}
+  httpcheck/paymentservice:
+    endpoint: http://paymentservice:${PAYMENT_SERVICE_PORT}
+  httpcheck/frontendproxy:
+    endpoint: http://frontendproxy:${ENVOY_PORT}
+  httpcheck/frontend:
+    endpoint: http://frontend:${FRONTEND_PORT}
+  httpcheck/emailservice:
+    endpoint: http://emailservice:${EMAIL_SERVICE_PORT}
+  httpcheck/currencyservice:
+    endpoint: http://currencyservice:${CURRENCY_SERVICE_PORT}
+  httpcheck/checkoutservice:
+    endpoint: http://checkoutservice:${CHECKOUT_SERVICE_PORT}
+  httpcheck/cartservice:
+    endpoint: http://cartservice:${CART_SERVICE_PORT}
+  httpcheck/adservice:
+    endpoint: http://adservice:${AD_SERVICE_PORT}
+
   otlp:
     protocols:
       grpc:
@@ -29,6 +56,20 @@ service:
       processors: [spanmetrics, batch]
       exporters: [logging, otlp]
     metrics:
-      receivers: [otlp]
+      receivers: 
+        - otlp
+        - httpcheck/featureflagservice
+        - httpcheck/shippingservice
+        - httpcheck/recommendationservice
+        - httpcheck/quoteservice
+        - httpcheck/productcatalogservice
+        - httpcheck/paymentservice
+        - httpcheck/frontendproxy
+        - httpcheck/frontend
+        - httpcheck/emailservice
+        - httpcheck/currencyservice
+        - httpcheck/checkoutservice
+        - httpcheck/cartservice
+        - httpcheck/adservice
       processors: [batch]
       exporters: [prometheus, logging]
