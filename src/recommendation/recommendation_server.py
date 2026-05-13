@@ -12,13 +12,8 @@ from concurrent import futures
 # Pip
 import grpc
 from opentelemetry import trace, metrics
-from opentelemetry._logs import set_logger_provider
-from opentelemetry.exporter.otlp.proto.grpc._log_exporter import (
-    OTLPLogExporter,
-)
-from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
-from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
-from opentelemetry.sdk.resources import Resource
+from opentelemetry._logs import get_logger_provider
+from opentelemetry.sdk._logs import LoggingHandler
 
 from openfeature import api
 from openfeature.contrib.provider.flagd import FlagdProvider
@@ -137,17 +132,7 @@ if __name__ == "__main__":
     rec_svc_metrics = init_metrics(meter)
 
     # Initialize Logs
-    logger_provider = LoggerProvider(
-        resource=Resource.create(
-            {
-                'service.name': service_name,
-            }
-        ),
-    )
-    set_logger_provider(logger_provider)
-    log_exporter = OTLPLogExporter(insecure=True)
-    logger_provider.add_log_record_processor(BatchLogRecordProcessor(log_exporter))
-    handler = LoggingHandler(level=logging.NOTSET, logger_provider=logger_provider)
+    handler = LoggingHandler(level=logging.NOTSET, logger_provider=get_logger_provider())
 
     # Attach OTLP handler to logger
     logger = logging.getLogger('main')

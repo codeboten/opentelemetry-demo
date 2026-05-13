@@ -456,7 +456,10 @@ services:
     environment:
       - PRODUCT_REVIEWS_PORT
       - OTEL_PYTHON_LOG_CORRELATION=true
+      - OTEL_CONFIG_FILE=/otel-config.yml
       - OTEL_EXPORTER_OTLP_ENDPOINT
+      - OTEL_PYTHON_DISTRO=cpp_distro
+      - OTEL_PYTHON_CONFIGURATOR=cpp_configurator
       - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
       - OTEL_RESOURCE_ATTRIBUTES=${OTEL_RESOURCE_ATTRIBUTES},service.criticality=medium
       - OTEL_SERVICE_NAME=product-reviews
@@ -479,6 +482,8 @@ services:
       otel-collector:
         condition: service_started
     logging: *logging
+    volumes:
+      - ./otel-config.yml:/otel-config.yml
 
   # Quote service
   quote:
@@ -531,7 +536,10 @@ services:
       - FLAGD_PORT
       - RECOMMENDATION_PORT
       - PRODUCT_CATALOG_ADDR
+      - OTEL_CONFIG_FILE=/otel-config.yml
       - OTEL_PYTHON_LOG_CORRELATION=true
+      - OTEL_PYTHON_DISTRO=cpp_distro
+      - OTEL_PYTHON_CONFIGURATOR=cpp_configurator
       - OTEL_EXPORTER_OTLP_ENDPOINT
       - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
       - OTEL_RESOURCE_ATTRIBUTES=${OTEL_RESOURCE_ATTRIBUTES},service.criticality=medium
@@ -543,6 +551,8 @@ services:
       otel-collector:
         condition: service_started
     logging: *logging
+    volumes:
+      - ./otel-config.yml:/otel-config.yml
 
   # Shipping service
   shipping:
